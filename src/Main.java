@@ -12,7 +12,7 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Phonocardiogram");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(800, 600);
+            frame.setSize(1024, 768);
 
             WaveformPanel waveformPanel = new WaveformPanel();
             frame.add(waveformPanel);
@@ -62,8 +62,15 @@ public class Main {
                 }
             });
 
+            JLabel thresholdLabel = new JLabel("Threshold:");
+            this.add(thresholdLabel);
+
+            JButton resetButton = new JButton("Reset Peak");
+            resetButton.addActionListener(e -> reset());
+
             // Add the spinner to the panel
             this.add(thresholdSpinner);
+            this.add(resetButton, BorderLayout.WEST);
         }
 
         void updateWaveform(byte[] bytes) {
@@ -116,6 +123,10 @@ public class Main {
             double averageTimeBetweenPeaks = totalDifference / (double) (peakTimes.size() - 1); // Average time between peaks in milliseconds
             double beatsPerMillisecond = 1.0 / averageTimeBetweenPeaks;
             return beatsPerMillisecond * 60 * 1000;
+        }
+        private void reset() {
+            peakCount = 0;
+            repaint();
         }
 
         @Override
